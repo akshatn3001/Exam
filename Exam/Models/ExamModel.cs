@@ -1,6 +1,6 @@
 ﻿namespace Exam.Models
 {
-    public class Exam
+    public class ExamModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
