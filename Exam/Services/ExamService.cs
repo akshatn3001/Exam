@@ -1,6 +1,8 @@
-﻿namespace Exam.Services
+﻿using Exam.Interfaces;
+
+namespace Exam.Services
 {
-    public class ExamService
+    public class ExamService:IExamService
     {
     }
 }
