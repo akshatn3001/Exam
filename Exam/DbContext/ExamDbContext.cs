@@ -8,11 +8,10 @@ public class ExamDbContext : DbContext
     {
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+   /* protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        // Configure the database connection string
         optionsBuilder.UseSqlServer("DefaultConnection");
-    }
+    }*/
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
