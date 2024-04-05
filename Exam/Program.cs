@@ -89,7 +89,7 @@ public static class Program
         builder.Services.AddCors(c =>
         {
             c.AddPolicy("CorsPolicy",
-             options => options.WithOrigins("https://localhost:7259")
+             options => options.WithOrigins("https://localhost:7285")
                               .AllowAnyMethod()
                               .WithHeaders(HeaderNames.ContentType, HeaderNames.Authorization, "x-custom-header")
                               .AllowCredentials());

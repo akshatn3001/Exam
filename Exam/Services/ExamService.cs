@@ -1,39 +1,47 @@
 ﻿using Exam.Interfaces;
 using Exam.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Exam.Services
 {
     public class ExamService : IExamService
     {
-        private readonly List<ExamModel> _exams;
+        private readonly ExamDbContext _context;
 
-        public ExamService()
+        public ExamService(ExamDbContext context)
         {
-            _exams = new List<ExamModel>();
+            _context = context;
         }
 
         public IEnumerable<ExamModel> GetAllExams()
         {
-            return _exams;
+            return _context.Exams.ToList();
         }
 
         public ExamModel GetExamById(int id)
         {
-            return _exams.Find(exam => exam.Id == id);
+            ExamModel exam= _context.Exams.FirstOrDefault(x => x.Id == id);
+            return exam;
+            
         }
 
         public void AddExam(ExamModel exam)
         {
-            exam.Id = _exams.Count + 1;
-            _exams.Add(exam);
+            
+            _context.Exams.Add(exam);
+            _context.SaveChanges();
         }
 
         public void UpdateExam(int id, ExamModel updatedExam)
         {
-            var index = _exams.FindIndex(exam => exam.Id == id);
-            if (index != -1)
+            
+            var exam = _context.Exams.FirstOrDefault(x=>x.Id == id);
+            if (exam != null)
             {
-                _exams[index] = updatedExam;
+                exam.Name = updatedExam.Name;
+                exam.Marks = updatedExam.Marks;
+                exam.Description = updatedExam.Description;
+                _context.SaveChanges();
             }
             else
             {
@@ -43,10 +51,10 @@ namespace Exam.Services
 
         public void DeleteExam(int id)
         {
-            var exam = _exams.Find(exam => exam.Id == id);
+            var exam = _context.Exams.FirstOrDefault(x=>x.Id == id);
             if (exam != null)
             {
-                _exams.Remove(exam);
+                _context.Exams.Remove(exam);
             }
             else
             {

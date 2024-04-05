@@ -5,7 +5,7 @@
 namespace Exam.Migrations
 {
     /// <inheritdoc />
-    public partial class firstdb : Migration
+    public partial class INITIATCRE : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,6 +33,8 @@ namespace Exam.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     roleType = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
