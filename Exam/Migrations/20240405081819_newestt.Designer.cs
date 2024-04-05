@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Exam.Migrations
 {
     [DbContext(typeof(ExamDbContext))]
-    [Migration("20240405053512_seconddb")]
-    partial class seconddb
+    [Migration("20240405081819_newestt")]
+    partial class newestt
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
