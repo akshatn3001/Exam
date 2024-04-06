@@ -1,10 +1,12 @@
 ﻿using Exam.Models;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Exam.Services
+namespace ExamFrontEnd.Services
 {
     public class JwtService
     {
@@ -14,6 +16,7 @@ namespace Exam.Services
         {
             this.configuration = configuration;
         }
+
         public string GenerateToken(User user)
         {
             var issuer = configuration["Jwt:Issuer"];
@@ -42,3 +45,5 @@ namespace Exam.Services
         }
     }
 }
+
+

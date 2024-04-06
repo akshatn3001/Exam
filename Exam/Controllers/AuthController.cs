@@ -1,9 +1,7 @@
 ﻿using Exam.Interfaces;
-using Exam.Models;
-using Microsoft.AspNetCore.Identity.Data;
+using Exam.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Mail;
-using System.Net;
 
 namespace Exam.Controllers
 {
@@ -12,17 +10,12 @@ namespace Exam.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserService userService;
+        private readonly JwtService jwtService;
 
-        public AuthController(IUserService userService)
+        public AuthController(IUserService userService, JwtService jwtService)
         {
             this.userService = userService;
-        }
-
-        [HttpPost("register")]
-        public IActionResult Register([FromBody] User user)
-        {
-            userService.Add(user);
-            return Ok();
+            this.jwtService = jwtService;
         }
 
         [HttpPost("login")]
@@ -30,17 +23,20 @@ namespace Exam.Controllers
         {
             var (token, user) = userService.AuthenticateWithDetails(loginRequest.Email, loginRequest.Password);
 
-            if (token == null || user == null)
-                return Unauthorized();
-
-            return Ok(new
+            if (token != null && user != null)
             {
-                Token = token,
-                user.Id,
-                user.Email,
-                user.roleType,
-                user.Name,
-            });
-        }    
+                return Ok(new
+                {
+                    Token = token,
+                    user.Id,
+                    user.Email,
+                    Role = user.roleType.ToString(), // Return role as a string
+                    user.Name
+                }); ;
+            }
+
+            return Unauthorized();
+        }
     }
 }
+

@@ -25,14 +25,14 @@ namespace Exam.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetExamById(int id)
+        public ExamModel GetExamById(int id)
         {
             var exam = _examService.GetExamById(id);
             if (exam == null)
             {
-                return NotFound();
+                return null;
             }
-            return Ok(exam);
+            return exam;
         }
 
         [HttpPost]

@@ -35,26 +35,26 @@ public static class Program
         builder.Services.AddControllers();
 
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidIssuer = config["Jwt:Issuer"],
-                    ValidAudience = config["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"])),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = false,
-                    ValidateIssuerSigningKey = true
-                };
-            });
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidIssuer = config["Jwt:Issuer"],
+            ValidAudience = config["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"])),
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true, // Set to true to validate token lifetime
+            ValidateIssuerSigningKey = true
+        };
+    });
 
-        builder.Services.AddAuthorization(options =>
+        /*builder.Services.AddAuthorization(options =>
         {
             options.DefaultPolicy = new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
                 .Build();
-        });
+        });*/
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>
@@ -99,7 +99,12 @@ public static class Program
         builder.Services.AddScoped<IExamService, ExamService>();
 
         builder.Services.AddScoped<JwtService>();
-
+        builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+            options.AddPolicy("ExamAdmin", policy => policy.RequireRole("ExamAdmin"));
+            options.AddPolicy("Employee", policy => policy.RequireRole("Employee"));
+        });
 
 
         builder.Services.AddDbContext<ExamDbContext>(options =>
